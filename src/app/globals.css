@@ -1,0 +1,302 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens — tema AZUL (CTA verde)                              */
+/*  Off-white azulado · azul claro · azul royal · azul profundo ·      */
+/*  dourado · verde de confirmação · texto quase preto azulado.        */
+/*  Os nomes dos tokens (purple/plum/lilac/orchid) são históricos —    */
+/*  mantidos para não quebrar as classes; os VALORES é que mandam.     */
+/*  Edite as cores aqui — nada de cor hardcoded nos componentes.       */
+/* ------------------------------------------------------------------ */
+:root {
+  /* Fundos claros. As dobras claras usam SÓ dois fundos, alternando:
+     `cream` e branco puro. `sand`/`lilac` não são fundo de dobra — são
+     tintas para elementos pequenos (chips, cards, itens do FAQ).
+
+     As cores das DOBRAS vieram da referência (suahorademudar.com.br):
+     branco, #F7F9FC no claro e #0B2D55 no escuro. É uma paleta FRIA; o creme
+     quente que estava aqui saiu junto com os tons de areia. O nome `cream`
+     ficou por ser usado em dezenas de classes — quem manda é o valor. */
+  --color-cream:      #F7F9FC; /* cinza-azulado quase branco — dobra clara A */
+  --color-sand:       #EDF1F8; /* tinta mais fechada — chips e cards        */
+  --color-lilac:      #F1F4FA; /* tinta suave — itens do FAQ, cards         */
+  --color-green-soft: #E9F6EE; /* verde suave — bolinhas de check           */
+
+  /* Fundos escuros (seções de respiro e contraste) */
+  --color-plum:       #0B2D55; /* azul profundo — seções escuras            */
+  --color-plum-deep:  #082343; /* azul quase preto — rodapé                 */
+
+  /* Acentos */
+  --color-purple:     #3B82F6; /* azul vivo — formas, pontos, ícones        */
+  --color-purple-ink: #1D4ED8; /* azul escuro — TEXTO destacado no claro (6,3:1) */
+  --color-orchid:     #A5C4F5; /* azul médio — brilhos decorativos          */
+  --color-gold:       #F0B429; /* dourado/âmbar — selos e destaque no escuro */
+
+  /* Verde de confirmação (checks e garantia) */
+  --color-green:      #34A96A; /* decorativo                                 */
+  --color-green-ink:  #1F7A45; /* TEXTO/ícone de "check" no claro (5,2:1)   */
+
+  /* CTA — VERDE VIVO (pedido do cliente). Atenção: com o texto BRANCO o
+     contraste fica em ~2,8:1, abaixo dos 4,5:1 da WCAG AA. É uma escolha
+     de conversão; se quiser voltar ao verde acessível use #15803D/#0E6330. */
+  --color-cta:        #22B455;
+  --color-cta-dark:   #159B45;
+
+  /* Texto */
+  --color-ink:        #1A2338; /* corpo sobre fundo claro (14,5:1)          */
+  --color-ink-soft:   #4C5A72; /* secundário sobre fundo claro (6,5:1)      */
+  --color-ink-invert: #DCE6F7; /* secundário sobre fundo escuro (12,6:1)    */
+
+  /* Bordas e alerta */
+  --color-border:     #E2E8F2; /* borda dos cards (fria, casa com as dobras) */
+  --color-danger:     #C62B24; /* preço antigo riscado (fundo claro)        */
+  --color-danger-soft:#FF8F84; /* preço antigo riscado (fundo escuro)       */
+  /* Vermelho VIVO — faixa e botão de recusa do popup de upsell. É mais
+     saturado que `danger` de propósito: ali o vermelho é o "pare" da oferta,
+     não um detalhe de preço. Continua ≥4,5:1 com texto branco.            */
+  --color-danger-vivid:#E01B24;
+
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
+}
+
+/* Expõe os tokens ao Tailwind (bg-cream, text-purple, bg-cta, etc.) */
+@theme inline {
+  --color-cream:      var(--color-cream);
+  --color-sand:       var(--color-sand);
+  --color-lilac:      var(--color-lilac);
+  --color-green-soft: var(--color-green-soft);
+  --color-plum:       var(--color-plum);
+  --color-plum-deep:  var(--color-plum-deep);
+  --color-purple:     var(--color-purple);
+  --color-purple-ink: var(--color-purple-ink);
+  --color-orchid:     var(--color-orchid);
+  --color-gold:       var(--color-gold);
+  --color-green:      var(--color-green);
+  --color-green-ink:  var(--color-green-ink);
+  --color-cta:        var(--color-cta);
+  --color-cta-dark:   var(--color-cta-dark);
+  --color-ink:        var(--color-ink);
+  --color-ink-soft:   var(--color-ink-soft);
+  --color-ink-invert: var(--color-ink-invert);
+  --color-border:     var(--color-border);
+  --color-danger:     var(--color-danger);
+  --color-danger-soft:var(--color-danger-soft);
+  --color-danger-vivid:var(--color-danger-vivid);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Fonte única (corpo + títulos) */
+  --font-sans:    var(--font-body);
+  --font-display: var(--font-body);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Títulos encorpados */
+.font-display {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Fonte grossa dos botões de CTA */
+.font-cta {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 800;
+}
+
+/* Preço antigo — sempre riscado. */
+.old-price {
+  color: var(--color-danger);
+  text-decoration-line: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-danger);
+}
+
+/* Variante para fundo escuro (card do Plano Completo). */
+.old-price-dark {
+  color: var(--color-danger-soft);
+  text-decoration-line: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-danger-soft);
+}
+
+/* Evita "viúvas" e melhora a quebra dos títulos grandes */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Realce colorido dentro dos headlines */
+.hl-purple {
+  color: var(--color-purple-ink);
+}
+.hl-gold {
+  color: var(--color-gold);
+}
+/* Verde de "bom negócio" — usado no título do popup de upsell, onde a cor
+   precisa dizer "economia" e não "marca". */
+.hl-green {
+  color: var(--color-green-ink);
+}
+
+/* Traço à mão livre por baixo da palavra destacada do headline */
+.hl-underline {
+  background-image: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-gold) 55%, transparent) 0 0.32em,
+    transparent 0.32em
+  );
+  background-repeat: no-repeat;
+  padding-inline: 0.06em;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Ênfase do CTA principal — pulso suave                              */
+/* ------------------------------------------------------------------ */
+.cta-pulse {
+  animation: cta-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes cta-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.022);
+  }
+}
+
+.cta-attention {
+  animation: cta-glow 2.2s ease-in-out infinite;
+}
+
+@keyframes cta-glow {
+  0%,
+  100% {
+    box-shadow: 0 8px 22px -8px rgba(34, 180, 85, 0.45);
+  }
+  50% {
+    box-shadow: 0 14px 34px -6px rgba(34, 180, 85, 0.8);
+  }
+}
+
+@keyframes cta-shine {
+  0% {
+    transform: translateX(0) skewX(-20deg);
+  }
+  60%,
+  100% {
+    transform: translateX(700%) skewX(-20deg);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Mockup da hero — flutuação lenta                                    */
+/* ------------------------------------------------------------------ */
+/* Só translate/rotate (composited): a imagem é o LCP da página e não
+   pode disparar layout a cada frame. Amplitude pequena de propósito —
+   é para dar vida, não para chamar atenção pra longe do botão. */
+.hero-float {
+  animation: hero-float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-0.6deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-pulse,
+  .cta-attention,
+  .hero-float {
+    animation: none;
+  }
+  .cta-attention::before {
+    animation: none !important;
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Marquee — faixa de temas em loop contínuo                          */
+/* ------------------------------------------------------------------ */
+.marquee-track {
+  animation: marquee-scroll var(--marquee-duration, 25s) linear infinite;
+}
+
+/* Faixa que anda para o outro lado (carrossel duplo da vitrine). */
+.marquee-reverse {
+  animation-direction: reverse;
+}
+
+@media (hover: hover) {
+  .marquee-mask:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Bordas esfumaçadas: a faixa "nasce" e "morre" na lateral em vez de bater
+   num corte seco — o que faz a fila parecer maior do que o que cabe na tela. */
+.edge-fade {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+  /* Sem animação a faixa ficaria travada no primeiro card: devolve o
+     controle para o dedo/scroll (a barra continua escondida). */
+  .marquee-mask {
+    overflow-x: auto;
+  }
+}
+
+.eyebrow {
+  letter-spacing: 0.14em;
+}
+
+/* Esconde a barra de rolagem dos carrosséis horizontais (mantém o swipe) */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
