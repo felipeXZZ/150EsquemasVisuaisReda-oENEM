@@ -50,7 +50,7 @@ export default function Home() {
         {/* 14 · Rodapé */}
         <Footer />
       </main>
-      {/* Sobe sozinho o popup de R$17,90 depois de um tempo na página ou
+      {/* Sobe sozinho o popup de R$17,00 depois de um tempo na página ou
           quando o ponteiro vai sair pelo topo. Fica FORA do <main> porque
           não é conteúdo da página: é uma camada por cima dela. */}
       <AutoUpsellPopup />

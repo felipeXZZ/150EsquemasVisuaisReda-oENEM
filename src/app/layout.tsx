@@ -84,7 +84,7 @@ const productJsonLd = {
     "@type": "AggregateOffer",
     priceCurrency: "BRL",
     lowPrice: "10.00",
-    highPrice: "27.90",
+    highPrice: "25.90",
     offerCount: 2,
     availability: "https://schema.org/InStock",
     url: `${SITE_URL}/`,
@@ -112,10 +112,6 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://api6.ipify.org" />
         <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
-        {/* Clarity: o tag carrega de www.clarity.ms via <script src> (sem
-            CORS), então o preconnect vai SEM crossorigin. */}
-        <link rel="preconnect" href="https://www.clarity.ms" />
-        <link rel="dns-prefetch" href="https://www.clarity.ms" />
 
         <script
           type="application/ld+json"
@@ -127,11 +123,6 @@ export default function RootLayout({
         <Tracking />
         {children}
 
-        {/* ⚠️ REVISAR: o pixel da Utmify (6a813275c16dfad116f7318a) e o
-            projeto do Clarity (y3snimvd08) vieram da oferta ANTERIOR (festas).
-            Sem trocar pelos desta oferta, as conversões e as gravações de
-            sessão da redação caem no funil errado. */}
-
         {/* Utmify — captura de UTMs */}
         <Script
           src="https://cdn.utmify.com.br/scripts/utms/latest.js"
@@ -140,25 +131,10 @@ export default function RootLayout({
           data-utmify-prevent-subids=""
         />
 
-        {/* Microsoft Clarity — mapa de calor e gravação de sessão.
-            Projeto ainda herdado (ver REVISAR acima). `afterInteractive` e não `lazyOnload` de
-            propósito: a gravação precisa começar junto com a primeira dobra,
-            senão o começo da sessão — justamente onde o tráfego de anúncio
-            desiste — não entra no replay. */}
-        <Script id="ms-clarity" strategy="afterInteractive">
-          {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "y3snimvd08");
-          `}
-        </Script>
-
         {/* Utmify — Pixel de conversão */}
         <Script id="utmify-pixel" strategy="lazyOnload">
           {`
-            window.pixelId = "6a813275c16dfad116f7318a";
+            window.pixelId = "6aa4c8286a08a80979bf4d40";
             var a = document.createElement("script");
             a.setAttribute("async", "");
             a.setAttribute("defer", "");

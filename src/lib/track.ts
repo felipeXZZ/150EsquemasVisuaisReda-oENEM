@@ -51,7 +51,7 @@ export function getUtms(): Payload {
  * Anexa as UTMs (+fbclid) da URL atual a uma URL de checkout, SEM duplicar:
  * se o parâmetro já existe no destino (ex.: a Utmify já reescreveu o link),
  * o valor original é preservado. Garante que a campanha chegue no checkout
- * mesmo quando o auto-rewrite da Utmify não reconhece o domínio (pay.wiapy.com)
+ * mesmo quando o auto-rewrite da Utmify não reconhece o domínio do checkout
  * ou ainda não carregou no momento do clique — que é o que zera a atribuição
  * e faz o IC (Início de Checkout) sumir do funil.
  */
@@ -94,7 +94,7 @@ export function trackEvent(eventName: string, extra: Payload = {}) {
  * momento em que o usuário clica para ir ao checkout.
  *
  * Por que isso existe: a página só tem a Utmify, e o IC "oficial" depende do
- * lado do checkout (wiapy → Utmify). Quando esse sinal falha, a Meta recebe
+ * lado do checkout (Zuptos → Utmify). Quando esse sinal falha, a Meta recebe
  * pouquíssimos ICs (ex.: 3 IC para 8 compras — impossível). Disparar o IC aqui,
  * no clique, garante à Meta um sinal de "início de checkout" para TODO mundo que
  * clica em comprar — o que a otimização de campanha precisa.

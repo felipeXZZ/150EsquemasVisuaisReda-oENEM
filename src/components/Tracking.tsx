@@ -7,7 +7,7 @@ import { trackEvent, trackCtaClick, trackInitiateCheckout, withUtms } from "@/li
 // ⚠️ Se o checkout mudar de domínio, ESTA linha tem que mudar junto: é ela que
 // libera a reescrita das UTMs e o InitiateCheckout no clique. Errada, o funil
 // perde a atribuição sem dar nenhum erro visível.
-const CHECKOUT_HOST = "pay.wiapy.com";
+const CHECKOUT_HOST = "app.zuptos.com.br";
 
 /**
  * Rastreamento central (montado uma vez no layout):
@@ -39,16 +39,16 @@ export function Tracking() {
           const loc = cta.getAttribute("data-cta-location") || "cta";
           trackEvent("checkout_redirect", { cta_location: loc });
           // IC padrão do Meta no clique — garante sinal de checkout para a Meta
-          // mesmo se o lado do checkout (wiapy/Utmify) não disparar.
-          // Completo = 27,90; 1ª etapa do popup = 17,90; 2ª etapa (para quem
+          // mesmo se o lado do checkout (Zuptos/Utmify) não disparar.
+          // Completo = 25,90; 1ª etapa do popup = 17,00; 2ª etapa (para quem
           // fechou a 1ª) = 12,90; qualquer outro caminho leva ao Básico = 10.
           // ⚠️ Todo caminho de upsell precisa estar AQUI: um data-cta-location
           // sem linha própria cai no 10 e reporta o valor errado ao Meta.
           const icValue =
             loc === "plan-premium"
-              ? 27.9
+              ? 25.9
               : loc === "upsell-accept"
-                ? 17.9
+                ? 17
                 : loc === "upsell-auto-accept"
                   ? 12.9
                   : 10;
@@ -102,8 +102,9 @@ export function Tracking() {
     onceVisible("planos", "offer_view");
 
     // ---- profundidade de rolagem (25/50/75/90%, uma vez cada) ----
-    // O relatório do Clarity diz quantos chegam ao fim, mas não ONDE param.
-    // Com estes marcos dá para achar a seção que derruba a leitura.
+    // Com o Clarity desligado, estes marcos são a ÚNICA leitura de onde o
+    // usuário para de rolar — sem eles não dá para achar a seção que derruba
+    // a leitura.
     const marcos = [25, 50, 75, 90];
     const atingidos = new Set<number>();
     let ticking = false;

@@ -1,47 +1,53 @@
 /* =====================================================================
  *  CONTEÚDO DA LANDING PAGE — "+150 Esquemas Visuais para Redação
  *  Nota 1000 no ENEM"
- *  Básico R$ 10,00 · Completo R$ 27,90 (150 esquemas + 5 bônus)
+ *  Básico R$ 10,00 · Completo R$ 25,90 (150 esquemas + 5 bônus)
  * =====================================================================
  *  Este é o ÚNICO arquivo que você precisa editar para trocar textos,
  *  imagens, preços e perguntas. Nenhum componente tem copy fixa.
  *
- *  ⚠️ TROCA DE OFERTA (era "150 Festas Infantis"): copy, mockup e as 17
+ *  ⚠️ TROCA DE OFERTA (era "150 Festas Infantis"): copy, mockup e as 37
  *  pranchas do carrossel já são da redação. O que ainda é herança da oferta
  *  antiga são as seções DESLIGADAS (`gallery` e `projectInside`, que
  *  desenham festas com <ThemeArt/>) — está marcado onde cada uma começa.
  * ===================================================================== */
 
 /* ------------------------------------------------------------------ */
-/*  CHECKOUT                                                           */
-/*  ⚠️ REVISAR: os quatro links abaixo ainda são os do produto ANTERIOR  */
-/*  (festas infantis) e com os preços antigos. Do jeito que estão, quem  */
-/*  compra recebe o material errado. Crie os 4 produtos no checkout com  */
-/*  os preços desta página (10,00 / 27,90 / 17,90 / 12,90) e troque as   */
-/*  URLs. Mexeu em preço? Mexa junto no texto dos planos, nos popups, no */
-/*  CTA final e nos valores do InitiateCheckout (Tracking.tsx).          */
+/*  CHECKOUT (Zuptos)                                                 */
+/*  Um link por preço: 10,00 / 25,90 / 17,00 / 12,90. Mudou o preço   */
+/*  de um produto no Zuptos? Mexa junto no texto dos planos, nos      */
+/*  popups, no CTA final e no InitiateCheckout (Tracking.tsx).        */
+/*                                                                    */
+/*  ⚠️ Mudou o DOMÍNIO do checkout? Troque também o CHECKOUT_HOST no   */
+/*  Tracking.tsx — é ele que libera as UTMs e o IC no clique; errado, */
+/*  o funil perde a atribuição sem dar nenhum erro visível.           */
 /* ------------------------------------------------------------------ */
 
-/** Checkout do PLANO COMPLETO (R$ 27,90 — 150 esquemas + 5 bônus). */
-export const CHECKOUT_URL = "https://pay.wiapy.com/XVk1GQwWkqMv"; // REVISAR
+/** Checkout do PLANO COMPLETO (R$ 25,90 — 150 esquemas + 5 bônus). */
+export const CHECKOUT_URL = "https://app.zuptos.com.br/checkout/97d2ce7b83a2ad97";
 
 /** Checkout do BÁSICO (R$ 10,00 — só os 150 esquemas). */
-export const BASIC_CHECKOUT_URL = "https://pay.wiapy.com/9Xq7OOKmv04u"; // REVISAR
+export const BASIC_CHECKOUT_URL = "https://app.zuptos.com.br/checkout/aa6a464a2862e581";
 
 /**
- * Checkout do UPSELL (R$ 17,90 — Plano Completo com os 5 bônus). É o destino
+ * Checkout do UPSELL (R$ 17,00 — Plano Completo com os 5 bônus). É o destino
  * do "Sim, quero" no popup que abre ao clicar no plano Básico.
+ *
+ * ⚠️ REVISAR NO ZUPTOS: a página passou de R$ 17,90 para R$ 17,00, mas o
+ * valor cobrado quem define é o produto deste link. Enquanto ele não for
+ * ajustado no painel, o popup anuncia 17,00 e o checkout cobra 17,90 — e a
+ * pessoa desiste na hora de pagar.
  */
-export const DOWNSELL_CHECKOUT_URL = "https://pay.wiapy.com/xCWCTvmt3k0"; // REVISAR
+export const DOWNSELL_CHECKOUT_URL = "https://app.zuptos.com.br/checkout/265a1610c612fdde";
 
 /**
  * Checkout da 2ª ETAPA DO POPUP (R$ 12,90 — Plano Completo com os 5 bônus).
- * É uma oferta MAIS BARATA que a da 1ª etapa (R$ 17,90) de propósito: aqui a
+ * É uma oferta MAIS BARATA que a da 1ª etapa (R$ 17,00) de propósito: aqui a
  * pessoa já fechou a oferta uma vez e estava indo embora — o desconto maior é
  * a última tentativa. Por isso tem checkout próprio, e o valor do
  * InitiateCheckout dele é separado no Tracking (`upsell-auto-accept`).
  */
-export const AUTO_UPSELL_CHECKOUT_URL = "https://pay.wiapy.com/xPwxl5g1sQm"; // REVISAR
+export const AUTO_UPSELL_CHECKOUT_URL = "https://app.zuptos.com.br/checkout/fa8b29859bd97fc6";
 
 /**
  * Back-redirect: página para onde o visitante é levado ao apertar "voltar".
@@ -198,13 +204,13 @@ export const showcase = {
     "Veja alguns dos 150 esquemas: o que escrever, em que ordem e o que revisar.",
   cta: "Ver os 150 esquemas",
   /**
-   * As 17 pranchas vêm do PDF (o número do slug é a PÁGINA no material).
+   * As 37 pranchas vêm do PDF (o número do slug é a PÁGINA no material).
    * `code` + `name` só aparecem no ALT de cada card — o card em si é só a
    * imagem —, então servem ao leitor de tela e ao Google. Mantenha-os batendo
    * com o TÍTULO impresso na prancha.
    *
    * A ordem decide as faixas: índices pares na de cima, ímpares na de baixo.
-   * São 17 pranchas: 9 na faixa de cima, 8 na de baixo. Acrescentou uma?
+   * São 37 pranchas: 19 na faixa de cima, 18 na de baixo. Acrescentou uma?
    * Ponha a imagem grande em `_originais-carrosel/`, rode `npm run carrosel`
    * e some o item aqui com o mesmo nome de arquivo como `slug`.
    */
@@ -226,6 +232,26 @@ export const showcase = {
     { code: "Esquema 008", name: "Literatura", slug: "18-literatura" },
     { code: "Esquema 009", name: "Filme ou Série", slug: "19-filme-ou-serie" },
     { code: "Esquema 010", name: "Obra de Arte", slug: "20-obra-de-arte" },
+    { code: "Esquema 011", name: "Música", slug: "21-musica" },
+    { code: "Esquema 012", name: "Conceito Filosófico", slug: "22-conceito-filosofico" },
+    { code: "Esquema 013", name: "Pensamento de Sociólogo", slug: "23-pensamento-de-sociologo" },
+    { code: "Esquema 014", name: "Comparação Passado × Presente", slug: "24-comparacao-passado-presente" },
+    { code: "Esquema 015", name: "Contraste Social", slug: "25-contraste-social" },
+    { code: "Esquema 016", name: "Paradoxo", slug: "26-paradoxo" },
+    { code: "Esquema 017", name: "Citação", slug: "27-citacao" },
+    { code: "Esquema 018", name: "Definição de Conceito", slug: "28-definicao-de-conceito" },
+    { code: "Esquema 019", name: "Estatística", slug: "29-estatistica" },
+    { code: "Esquema 020", name: "Fato Histórico", slug: "30-fato-historico" },
+    { code: "Esquema 021", name: "Problematização Direta", slug: "31-problematizacao-direta" },
+    { code: "Esquema 022", name: "Pergunta Retórica", slug: "32-pergunta-retorica" },
+    { code: "Esquema 023", name: "Causa e Consequência", slug: "33-causa-e-consequencia" },
+    { code: "Esquema 024", name: "Problema + Dois Eixos", slug: "34-problema-dois-eixos" },
+    { code: "Esquema 025", name: "Analogia", slug: "35-analogia" },
+    { code: "Esquema 026", name: "Atualidade", slug: "36-atualidade" },
+    { code: "Esquema 027", name: "Tecnologia", slug: "37-tecnologia" },
+    { code: "Esquema 028", name: "Meio Ambiente", slug: "38-meio-ambiente" },
+    { code: "Esquema 029", name: "Direitos Humanos", slug: "39-direitos-humanos" },
+    { code: "Esquema 030", name: "Introdução Coringa Adaptável", slug: "40-introducao-coringa" },
   ],
 };
 
@@ -788,7 +814,7 @@ export const plans = {
     priceFrom: "De R$196",
     /** Mesma escrita do popup: "De R$X" riscado → "POR APENAS" → preço. */
     priceConnector: "Por apenas",
-    price: "R$27,90",
+    price: "R$25,90",
     /**
      * Pílula logo abaixo do preço do Plano Completo — é o ponto exato em que a
      * pessoa compara os dois valores, então ela carrega o ARGUMENTO da
@@ -836,13 +862,13 @@ export const plans = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  10b. Popup de upsell — 1ª etapa (R$ 17,90)                         */
+/*  10b. Popup de upsell — 1ª etapa (R$ 17,00)                         */
 /* ------------------------------------------------------------------ */
 /**
  * Primeira oferta do funil de popup: o Plano Completo (com os 5 bônus) por
- * R$ 17,90. Aparece por DOIS caminhos — no clique do plano Básico e sozinho
+ * R$ 17,00. Aparece por DOIS caminhos — no clique do plano Básico e sozinho
  * (tempo no site / intenção de saída, ver `upsellAuto`).
- *  - aceitar  → DOWNSELL_CHECKOUT_URL (R$ 17,90)
+ *  - aceitar  → DOWNSELL_CHECKOUT_URL (R$ 17,00)
  *  - recusar  → BASIC_CHECKOUT_URL (R$ 10,00, só os esquemas)
  *  - FECHAR   → não acaba o funil: cai na 2ª etapa (`upsellDownsell`)
  *
@@ -854,7 +880,7 @@ export const upsell = {
   eyebrow: "✨ Espera! Oferta exclusiva",
   title: "Leve o {{Completo}} por apenas:",
   lead: "Antes de continuar com o básico, veja essa oferta única:",
-  priceFrom: "De R$ 27,90",
+  priceFrom: "De R$ 25,90",
   /**
    * O preço sai em duas partes para os centavos ficarem menores que os reais:
    * `priceNow` são os reais e `priceNowCents` os centavos (deixe vazio se um
@@ -863,11 +889,11 @@ export const upsell = {
    * precisa do valor inteiro (CTA e leitor de tela).
    */
   priceNow: "R$ 17",
-  priceNowCents: ",90",
-  priceNowFull: "R$ 17,90",
+  priceNowCents: "",
+  priceNowFull: "R$ 17,00",
   paymentNote: "pagamento único · acesso imediato",
   bonusTitle: "5 bônus exclusivos inclusos",
-  cta: "Quero o Completo por 17,90",
+  cta: "Quero o Completo por R$ 17",
   decline: "Não, prefiro continuar com o básico por R$ 10,00",
   closeLabel: "Fechar",
 };
@@ -878,7 +904,7 @@ export const upsell = {
 /**
  * NÃO é uma oferta: são os tempos e os textos de quando o funil de popup
  * abre SOZINHO (a pessoa passou muito tempo sem decidir ou fez o gesto de
- * sair). A oferta que aparece é a MESMA 1ª etapa de `upsell` (R$ 17,90) — o
+ * sair). A oferta que aparece é a MESMA 1ª etapa de `upsell` (R$ 17,00) — o
  * que muda aqui é só o CONTEXTO, porque ninguém escolheu o básico ainda.
  *
  * Abre UMA vez por sessão, e nunca por cima do popup do plano Básico.
@@ -902,26 +928,26 @@ export const upsellAuto = {
 /*  10d. Popup de upsell — 2ª etapa (R$ 12,90)                         */
 /* ------------------------------------------------------------------ */
 /**
- * A última tentativa: quem FECHOU o popup de R$ 17,90 (pelo X, pelo Esc ou
+ * A última tentativa: quem FECHOU o popup de R$ 17,00 (pelo X, pelo Esc ou
  * clicando fora) recebe o mesmo Plano Completo por R$ 12,90 — não importa se
  * a 1ª etapa veio do clique no Básico ou do gatilho automático.
  *
  * ⚠️ REVISAR: o preço desta 2ª etapa NÃO estava no briefing da campanha (que
- * define 10,00 / 17,90 / 27,90). R$ 12,90 foi escolhido para ficar abaixo da
+ * define 10,00 / 17,00 / 25,90). R$ 12,90 foi escolhido para ficar abaixo da
  * 1ª etapa e ainda acima do Básico — confirme antes de publicar.
  *
  * Só vale para quem FECHOU. Quem clicou em "prefiro o básico" ESCOLHEU e vai
  * para o checkout: perseguir essa pessoa com um segundo popup seria tirar
  * dela a saída que o próprio popup ofereceu.
  *
- * A estrutura (título, bônus, "De R$ 27,90") continua vindo de `upsell`; os
+ * A estrutura (título, bônus, "De R$ 25,90") continua vindo de `upsell`; os
  * campos abaixo substituem os de lá com o mesmo nome.
  * ⚠️ Mexeu no preço? Mexa junto: `AUTO_UPSELL_CHECKOUT_URL`, o `savings`
  * abaixo e o valor de `upsell-auto-accept` no Tracking.tsx.
  */
 export const upsellDownsell = {
   /**
-   * Esta tela precisa PARECER outra. Quem fechou a de R$ 17,90 vai ver o
+   * Esta tela precisa PARECER outra. Quem fechou a de R$ 17,00 vai ver o
    * mesmo formato de novo — se o topo, o título e o riscado não mudarem, ela
    * lê "é o mesmo popup" e fecha no automático sem perceber que o preço caiu.
    * Por isso a faixa vermelha troca de texto aqui.
@@ -936,12 +962,12 @@ export const upsellDownsell = {
   /** Mesma saída de sempre — o básico continua a um clique. */
   decline: "Prefiro só os 150 esquemas por R$ 10,00",
   /**
-   * O riscado aqui NÃO é o R$ 27,90 do plano: é o preço que a pessoa ACABOU
+   * O riscado aqui NÃO é o R$ 25,90 do plano: é o preço que a pessoa ACABOU
    * de recusar. É o único jeito de a queda ficar visível — riscar de novo o
-   * 27,90 mostraria exatamente a mesma linha da tela anterior.
+   * 25,90 mostraria exatamente a mesma linha da tela anterior.
    */
   priceFromLabel: "Você viu por",
-  priceFrom: "R$ 17,90",
+  priceFrom: "R$ 17,00",
   priceNow: "R$ 12",
   priceNowCents: ",90",
   priceNowFull: "R$ 12,90",
@@ -950,11 +976,11 @@ export const upsellDownsell = {
    * Passou disso, o texto quebra no meio do valor — "R$" numa linha e o
    * número na outra — e o número, que é o argumento, some.
    * O "no total" é o que deixa a conta de pé sem imprimir mais um preço na
-   * tela: são R$ 15,00 contra o plano cheio, e não contra o R$ 17,90 riscado
+   * tela: são R$ 13,00 contra o plano cheio, e não contra o R$ 17,00 riscado
    * aqui em cima.
    * ⚠️ Precisa bater com `upsell.priceFrom` − `priceNowFull`.
    */
-  savings: "Você economiza R$ 15,00 no total",
+  savings: "Você economiza R$ 13,00 no total",
   /**
    * A lista dos 5 bônus não se repete aqui — vira UMA linha. Na 1ª tela ela
    * era o argumento; aqui ela já foi lida, e repetir 5 itens empurra o preço
@@ -1046,7 +1072,7 @@ export const finalCta = {
   subtitle:
     "Faltam poucas semanas: comece a treinar com o método certo agora e pare de perder pontos por falta de estrutura.",
   highlight: "150 esquemas + 5 bônus no Completo",
-  price: "R$27,90",
+  price: "R$25,90",
   priceNote: "Pagamento único",
   cta: "Quero garantir meu acesso",
   badges: ["Acesso imediato", "Pagamento único", "Garantia", "Sem mensalidade"],

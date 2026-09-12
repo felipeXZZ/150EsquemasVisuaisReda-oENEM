@@ -18,6 +18,9 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
+    // O Clarity está desligado no momento (removido do layout), então esta
+    // chamada é um no-op — o `?.` já cobre isso. Mantida de propósito: quando
+    // o projeto novo entrar, o render_error volta a ser reportado sozinho.
     try {
       (
         window as unknown as { clarity?: (...a: unknown[]) => void }
