@@ -891,6 +891,8 @@ export const upsell = {
   priceNow: "R$ 17",
   priceNowCents: "",
   priceNowFull: "R$ 17,00",
+  /** ⚠️ Precisa bater com `priceFrom` − `priceNowFull` (25,90 − 17,00). */
+  savings: "Você economiza R$ 8,90 no total",
   paymentNote: "pagamento único · acesso imediato",
   bonusTitle: "5 bônus exclusivos inclusos",
   cta: "Quero o Completo por R$ 17",

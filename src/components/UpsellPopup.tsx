@@ -44,8 +44,8 @@ import { PAGE_VARIANT, trackEvent } from "@/lib/track";
  * — por isso ele não aparece antes: quem compraria por 17,00 não precisa
  * descobrir que havia um desconto maior esperando.
  *
- * Só a 2ª etapa escreve quanto a pessoa economiza em relação ao
- * `upsell.priceFrom` riscado — na 1ª o próprio riscado já faz essa conta.
+ * As duas etapas escrevem quanto a pessoa economiza em relação ao plano
+ * cheio (`upsell.priceFrom`).
  *
  * Recusar é um link de verdade, e não um "fechar disfarçado": quem quer só os
  * projetos precisa conseguir comprar sem obstáculo. Por isso a recusa NÃO cai
@@ -110,11 +110,7 @@ type Oferta = {
   priceNow: string;
   /** Vazio quando a oferta for redonda — aí os centavos nem renderizam. */
   priceNowCents: string;
-  /**
-   * Quanto se ganha em relação ao plano cheio. Só a 2ª etapa usa: na 1ª o
-   * riscado já faz a conta sozinho, e a linha extra só empurrava o preço para
-   * baixo. Sem o campo, a linha nem renderiza.
-   */
+  /** Quanto se ganha em relação ao plano cheio. Sem o campo, a linha nem renderiza. */
   savings?: string;
   /**
    * Quando presente, os 5 bônus viram ESTA linha em vez da lista inteira.
@@ -143,6 +139,7 @@ const OFERTA_PRIMEIRA: Oferta = {
   priceFrom: upsell.priceFrom,
   priceNow: upsell.priceNow,
   priceNowCents: upsell.priceNowCents,
+  savings: upsell.savings,
   cta: upsell.cta,
   href: DOWNSELL_CHECKOUT_URL,
   ctaLocation: "upsell-accept",
@@ -368,9 +365,8 @@ function UpsellDialog({
                 <span className="text-2xl">{oferta.priceNowCents}</span>
               ) : null}
             </p>
-            {/* A economia é o argumento da 2ª etapa — nem a hero nem os planos
-                dizem quanto se ganha ao trocar de plano. Na 1ª ela não sai: o
-                riscado logo acima já mostra a queda. */}
+            {/* A economia — nem a hero nem os planos dizem quanto se ganha ao
+                trocar de plano. */}
             {oferta.savings ? (
               <p className="mt-2 text-balance text-[13px] font-extrabold text-green-ink">
                 {valorInteiro(oferta.savings)}
