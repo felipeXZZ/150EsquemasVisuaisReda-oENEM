@@ -662,7 +662,7 @@ export const testimonials = {
         "Eu travava toda vez que via o tema da redação, não sabia nem por onde começar. Com os esquemas, aprendi a {{montar a introdução em menos de 5 minutos}} e parei de perder tempo de prova pensando na estrutura.",
       name: "Beatriz Almeida",
       role: "Aluna do 3º ano",
-      avatar: "",
+      avatar: "/avaliacoes/beatriz-almeida.webp",
       stars: 5,
     },
     {
@@ -670,7 +670,7 @@ export const testimonials = {
         "O que mais me ajudou foi o {{esquema de repertório}}. Eu ficava repetindo os mesmos dois filósofos em toda redação e a correção sempre apontava isso. Depois que usei o banco de repertórios, {{consegui variar sem parecer forçado}}.",
       name: "Gustavo Lima",
       role: "Cursinho pré-vestibular",
-      avatar: "",
+      avatar: "/avaliacoes/gustavo-lima.webp",
       stars: 5,
     },
     {
@@ -678,7 +678,7 @@ export const testimonials = {
         "Fazia redação sem seguir nenhuma lógica, só escrevia o que vinha na cabeça. Os esquemas me mostraram {{exatamente o que cada parágrafo precisa ter}}. Subi mais de 200 pontos entre um simulado e outro.",
       name: "Ana Julia Ferreira",
       role: "Treineira",
-      avatar: "",
+      avatar: "/avaliacoes/ana-julia.webp",
       stars: 5,
     },
   ],
