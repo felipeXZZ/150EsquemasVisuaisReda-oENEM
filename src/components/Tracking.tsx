@@ -3,11 +3,11 @@
 import { useEffect } from "react";
 import { trackEvent, trackCtaClick, trackInitiateCheckout, withUtms } from "@/lib/track";
 
-// Host do checkout — para disparar checkout_redirect só quando for pro checkout.
+// Hosts do checkout — para disparar checkout_redirect só quando for pro checkout.
 // ⚠️ Se o checkout mudar de domínio, ESTA linha tem que mudar junto: é ela que
 // libera a reescrita das UTMs e o InitiateCheckout no clique. Errada, o funil
 // perde a atribuição sem dar nenhum erro visível.
-const CHECKOUT_HOST = "app.zuptos.com.br";
+const CHECKOUT_HOSTS = ["ggcheckout.app", "app.zuptos.com.br"];
 
 /**
  * Rastreamento central (montado uma vez no layout):
@@ -32,7 +32,7 @@ export function Tracking() {
       if (cta) {
         trackCtaClick(cta);
         const link = cta.closest("a") as HTMLAnchorElement | null;
-        if (link && link.href.includes(CHECKOUT_HOST)) {
+        if (link && CHECKOUT_HOSTS.some((h) => link.href.includes(h))) {
           // Reescreve o href AGORA (captura, antes da navegação) para carregar
           // as UTMs da campanha ao checkout — sem isso o IC fica órfão da fonte.
           link.href = withUtms(link.href);

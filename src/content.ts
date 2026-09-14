@@ -13,7 +13,7 @@
  * ===================================================================== */
 
 /* ------------------------------------------------------------------ */
-/*  CHECKOUT (Zuptos)                                                 */
+/*  CHECKOUT (GGCheckout; a 2ª etapa do popup ainda está no Zuptos)   */
 /*  Um link por preço: 10,00 / 25,90 / 17,00 / 12,90. Mudou o preço   */
 /*  de um produto no Zuptos? Mexa junto no texto dos planos, nos      */
 /*  popups, no CTA final e no InitiateCheckout (Tracking.tsx).        */
@@ -24,21 +24,16 @@
 /* ------------------------------------------------------------------ */
 
 /** Checkout do PLANO COMPLETO (R$ 25,90 — 150 esquemas + 5 bônus). */
-export const CHECKOUT_URL = "https://app.zuptos.com.br/checkout/97d2ce7b83a2ad97";
+export const CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/gyzwMhAIdb7qzSOBvxMi";
 
 /** Checkout do BÁSICO (R$ 10,00 — só os 150 esquemas). */
-export const BASIC_CHECKOUT_URL = "https://app.zuptos.com.br/checkout/aa6a464a2862e581";
+export const BASIC_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/O9WWu2UqhKw6L6rgD2F7";
 
 /**
  * Checkout do UPSELL (R$ 17,00 — Plano Completo com os 5 bônus). É o destino
  * do "Sim, quero" no popup que abre ao clicar no plano Básico.
- *
- * ⚠️ REVISAR NO ZUPTOS: a página passou de R$ 17,90 para R$ 17,00, mas o
- * valor cobrado quem define é o produto deste link. Enquanto ele não for
- * ajustado no painel, o popup anuncia 17,00 e o checkout cobra 17,90 — e a
- * pessoa desiste na hora de pagar.
  */
-export const DOWNSELL_CHECKOUT_URL = "https://app.zuptos.com.br/checkout/265a1610c612fdde";
+export const DOWNSELL_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/4CVWOkbRsDgU8IJ3f0Y9";
 
 /**
  * Checkout da 2ª ETAPA DO POPUP (R$ 12,90 — Plano Completo com os 5 bônus).
