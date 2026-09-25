@@ -14,7 +14,7 @@
 
 /* ------------------------------------------------------------------ */
 /*  CHECKOUT (GGCheckout; a 2ª etapa do popup ainda está no Zuptos)   */
-/*  Um link por preço: 10,00 / 25,90 / 17,00 / 12,90. Mudou o preço   */
+/*  Um link por preço: 10,00 / 25,90 / 17,90 / 12,90. Mudou o preço   */
 /*  de um produto no Zuptos? Mexa junto no texto dos planos, nos      */
 /*  popups, no CTA final e no InitiateCheckout (Tracking.tsx).        */
 /*                                                                    */
@@ -30,14 +30,14 @@ export const CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/gyzwMhAIdb7qzSOB
 export const BASIC_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/O9WWu2UqhKw6L6rgD2F7";
 
 /**
- * Checkout do UPSELL (R$ 17,00 — Plano Completo com os 5 bônus). É o destino
+ * Checkout do UPSELL (R$ 17,90 — Plano Completo com os 5 bônus). É o destino
  * do "Sim, quero" no popup que abre ao clicar no plano Básico.
  */
 export const DOWNSELL_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/4CVWOkbRsDgU8IJ3f0Y9";
 
 /**
  * Checkout da 2ª ETAPA DO POPUP (R$ 12,90 — Plano Completo com os 5 bônus).
- * É uma oferta MAIS BARATA que a da 1ª etapa (R$ 17,00) de propósito: aqui a
+ * É uma oferta MAIS BARATA que a da 1ª etapa (R$ 17,90) de propósito: aqui a
  * pessoa já fechou a oferta uma vez e estava indo embora — o desconto maior é
  * a última tentativa. Por isso tem checkout próprio, e o valor do
  * InitiateCheckout dele é separado no Tracking (`upsell-auto-accept`).
@@ -143,7 +143,7 @@ export const hero = {
   // 1,35rem) e precisa caber em UMA linha a partir de 360px. O texto completo
   // da campanha ("Quero os esquemas de redação nota 1000") só cabe nos botões
   // das outras seções, que são menores.
-  cta: "Quero os 150 esquemas",
+  cta: "Quero garantir agora",
   /**
    * Linha única de reforço abaixo do botão: logo depois do CTA o que trava o
    * clique é risco (é seguro? quando recebo?), não mais benefício. O escudo
@@ -857,13 +857,13 @@ export const plans = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  10b. Popup de upsell — 1ª etapa (R$ 17,00)                         */
+/*  10b. Popup de upsell — 1ª etapa (R$ 17,90)                         */
 /* ------------------------------------------------------------------ */
 /**
  * Primeira oferta do funil de popup: o Plano Completo (com os 5 bônus) por
- * R$ 17,00. Aparece por DOIS caminhos — no clique do plano Básico e sozinho
+ * R$ 17,90. Aparece por DOIS caminhos — no clique do plano Básico e sozinho
  * (tempo no site / intenção de saída, ver `upsellAuto`).
- *  - aceitar  → DOWNSELL_CHECKOUT_URL (R$ 17,00)
+ *  - aceitar  → DOWNSELL_CHECKOUT_URL (R$ 17,90)
  *  - recusar  → BASIC_CHECKOUT_URL (R$ 10,00, só os esquemas)
  *  - FECHAR   → não acaba o funil: cai na 2ª etapa (`upsellDownsell`)
  *
@@ -884,13 +884,13 @@ export const upsell = {
    * precisa do valor inteiro (CTA e leitor de tela).
    */
   priceNow: "R$ 17",
-  priceNowCents: "",
-  priceNowFull: "R$ 17,00",
-  /** ⚠️ Precisa bater com `priceFrom` − `priceNowFull` (25,90 − 17,00). */
-  savings: "Você economiza R$ 8,90 no total",
+  priceNowCents: ",90",
+  priceNowFull: "R$ 17,90",
+  /** ⚠️ Precisa bater com `priceFrom` − `priceNowFull` (25,90 − 17,90). */
+  savings: "Você economiza R$ 8,00 no total",
   paymentNote: "pagamento único · acesso imediato",
   bonusTitle: "5 bônus exclusivos inclusos",
-  cta: "Quero o Completo por R$ 17",
+  cta: "Quero o Completo por R$ 17,90",
   decline: "Não, prefiro continuar com o básico por R$ 10,00",
   closeLabel: "Fechar",
 };
@@ -901,7 +901,7 @@ export const upsell = {
 /**
  * NÃO é uma oferta: são os tempos e os textos de quando o funil de popup
  * abre SOZINHO (a pessoa passou muito tempo sem decidir ou fez o gesto de
- * sair). A oferta que aparece é a MESMA 1ª etapa de `upsell` (R$ 17,00) — o
+ * sair). A oferta que aparece é a MESMA 1ª etapa de `upsell` (R$ 17,90) — o
  * que muda aqui é só o CONTEXTO, porque ninguém escolheu o básico ainda.
  *
  * Abre UMA vez por sessão, e nunca por cima do popup do plano Básico.
@@ -925,12 +925,12 @@ export const upsellAuto = {
 /*  10d. Popup de upsell — 2ª etapa (R$ 12,90)                         */
 /* ------------------------------------------------------------------ */
 /**
- * A última tentativa: quem FECHOU o popup de R$ 17,00 (pelo X, pelo Esc ou
+ * A última tentativa: quem FECHOU o popup de R$ 17,90 (pelo X, pelo Esc ou
  * clicando fora) recebe o mesmo Plano Completo por R$ 12,90 — não importa se
  * a 1ª etapa veio do clique no Básico ou do gatilho automático.
  *
  * ⚠️ REVISAR: o preço desta 2ª etapa NÃO estava no briefing da campanha (que
- * define 10,00 / 17,00 / 25,90). R$ 12,90 foi escolhido para ficar abaixo da
+ * define 10,00 / 17,90 / 25,90). R$ 12,90 foi escolhido para ficar abaixo da
  * 1ª etapa e ainda acima do Básico — confirme antes de publicar.
  *
  * Só vale para quem FECHOU. Quem clicou em "prefiro o básico" ESCOLHEU e vai
@@ -944,7 +944,7 @@ export const upsellAuto = {
  */
 export const upsellDownsell = {
   /**
-   * Esta tela precisa PARECER outra. Quem fechou a de R$ 17,00 vai ver o
+   * Esta tela precisa PARECER outra. Quem fechou a de R$ 17,90 vai ver o
    * mesmo formato de novo — se o topo, o título e o riscado não mudarem, ela
    * lê "é o mesmo popup" e fecha no automático sem perceber que o preço caiu.
    * Por isso a faixa vermelha troca de texto aqui.
@@ -964,7 +964,7 @@ export const upsellDownsell = {
    * 25,90 mostraria exatamente a mesma linha da tela anterior.
    */
   priceFromLabel: "Você viu por",
-  priceFrom: "R$ 17,00",
+  priceFrom: "R$ 17,90",
   priceNow: "R$ 12",
   priceNowCents: ",90",
   priceNowFull: "R$ 12,90",
@@ -973,7 +973,7 @@ export const upsellDownsell = {
    * Passou disso, o texto quebra no meio do valor — "R$" numa linha e o
    * número na outra — e o número, que é o argumento, some.
    * O "no total" é o que deixa a conta de pé sem imprimir mais um preço na
-   * tela: são R$ 13,00 contra o plano cheio, e não contra o R$ 17,00 riscado
+   * tela: são R$ 13,00 contra o plano cheio, e não contra o R$ 17,90 riscado
    * aqui em cima.
    * ⚠️ Precisa bater com `upsell.priceFrom` − `priceNowFull`.
    */

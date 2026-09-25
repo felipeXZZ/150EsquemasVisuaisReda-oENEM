@@ -40,7 +40,7 @@ export function Tracking() {
           trackEvent("checkout_redirect", { cta_location: loc });
           // IC padrão do Meta no clique — garante sinal de checkout para a Meta
           // mesmo se o lado do checkout (Zuptos/Utmify) não disparar.
-          // Completo = 25,90; 1ª etapa do popup = 17,00; 2ª etapa (para quem
+          // Completo = 25,90; 1ª etapa do popup = 17,90; 2ª etapa (para quem
           // fechou a 1ª) = 12,90; qualquer outro caminho leva ao Básico = 10.
           // ⚠️ Todo caminho de upsell precisa estar AQUI: um data-cta-location
           // sem linha própria cai no 10 e reporta o valor errado ao Meta.
@@ -48,7 +48,7 @@ export function Tracking() {
             loc === "plan-premium"
               ? 25.9
               : loc === "upsell-accept"
-                ? 17
+                ? 17.9
                 : loc === "upsell-auto-accept"
                   ? 12.9
                   : 10;

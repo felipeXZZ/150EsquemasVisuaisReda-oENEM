@@ -62,7 +62,7 @@ export function PricingSection() {
             </div>
 
             {/* Não vai direto ao checkout: abre o popup que oferece o Plano
-                Completo com os 5 bônus por R$17,00. Recusar (ou fechar) leva
+                Completo com os 5 bônus por R$17,90. Recusar (ou fechar) leva
                 ao Básico normalmente — daqui NÃO sai a segunda oferta de
                 R$12,90, que é só do popup automático. */}
             <BasicCtaWithUpsell label={plans.basic.cta} />

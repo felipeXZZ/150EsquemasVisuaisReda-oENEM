@@ -25,7 +25,7 @@ import { PAGE_VARIANT, trackEvent } from "@/lib/track";
  *
  * A 1ª etapa é a mesma para todo mundo; o que muda é se existe uma 2ª.
  *
- *   1ª etapa → R$ 17,00 (`DOWNSELL_CHECKOUT_URL`)
+ *   1ª etapa → R$ 17,90 (`DOWNSELL_CHECKOUT_URL`)
  *   fechou (X / Esc / clique fora)
  *   2ª etapa → R$ 12,90 (`AUTO_UPSELL_CHECKOUT_URL`) — só no caminho automático
  *   fechou de novo → acabou
@@ -41,7 +41,7 @@ import { PAGE_VARIANT, trackEvent } from "@/lib/track";
  * existência da 2ª etapa; a oferta em si depende da ETAPA, nunca de quem abriu.
  *
  * O preço menor da 2ª etapa é a última tentativa com quem estava indo embora
- * — por isso ele não aparece antes: quem compraria por 17,00 não precisa
+ * — por isso ele não aparece antes: quem compraria por 17,90 não precisa
  * descobrir que havia um desconto maior esperando.
  *
  * As duas etapas escrevem quanto a pessoa economiza em relação ao plano
@@ -54,7 +54,7 @@ import { PAGE_VARIANT, trackEvent } from "@/lib/track";
  * Os data-* são lidos pelo Tracking central (cta_click, checkout_redirect e
  * InitiateCheckout com o valor certo de cada passo). Como os dois passos
  * valem valores diferentes, cada um tem seu `data-cta-location`
- * (`upsell-accept` = 17,00 e `upsell-auto-accept` = 12,90) — os dois
+ * (`upsell-accept` = 17,90 e `upsell-auto-accept` = 12,90) — os dois
  * PRECISAM existir no mapa de valores do Tracking.tsx, senão o passo sem
  * mapa vai para o Meta valendo R$10,00.
  */
@@ -561,7 +561,7 @@ function marcarVisto() {
 
 /**
  * Botão do plano Básico que, em vez de ir direto ao checkout de R$10,00, abre
- * a oferta de R$ 17,00 pelo Plano Completo.
+ * a oferta de R$ 17,90 pelo Plano Completo.
  *
  * Uma ETAPA só (`comDownsell` = false): fechar aqui encerra. O R$ 12,90 é
  * exclusivo do popup automático — ver o cabeçalho do arquivo.
@@ -609,7 +609,7 @@ export function BasicCtaWithUpsell({ label }: { label: string }) {
 }
 
 /**
- * Abre o funil — começando pela oferta de R$ 17,00 e caindo no R$ 12,90 se a
+ * Abre o funil — começando pela oferta de R$ 17,90 e caindo no R$ 12,90 se a
  * pessoa fechar — sem ninguém pedir, por dois gatilhos:
  *
  *  1. TEMPO — `upsellAuto.delayMs` desde que a página abriu. É o gatilho que
