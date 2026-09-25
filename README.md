@@ -28,8 +28,7 @@ Os pontos abaixo estão marcados com `REVISAR` no código:
 
 | O quê | Onde | Por quê |
 |---|---|---|
-| **Links de checkout** | `src/content.ts` → `CHECKOUT_URL`, `BASIC_CHECKOUT_URL`, `DOWNSELL_CHECKOUT_URL`, `AUTO_UPSELL_CHECKOUT_URL` | Ainda apontam para o checkout do produto **anterior** (festas) e com os preços antigos. Do jeito que estão, quem compra recebe o material errado. |
-| **Preço da 2ª etapa do popup** | `src/content.ts` → `upsellDownsell` | R$ 12,90 foi escolhido aqui — o briefing só definia 10,00 / 17,90 / 27,90. Confirmar. |
+| **Links de checkout** | `src/content.ts` → `CHECKOUT_URL`, `BASIC_CHECKOUT_URL`, `DOWNSELL_CHECKOUT_URL` | Ainda apontam para o checkout do produto **anterior** (festas) e com os preços antigos. Do jeito que estão, quem compra recebe o material errado. |
 | **Data da prova** | `src/content.ts` → `finalCta.title` | A página **afirma** que a redação é em 8 de novembro. Conferir no calendário do INEP e trocar quando a prova passar. |
 | **Domínio** | `src/content.ts` → `SITE_URL` | Usado em metadados, `robots.txt` e `sitemap.xml`. |
 | **Pixel / Clarity** | `src/app/layout.tsx` | O `pixelId` da Utmify e o projeto do Clarity vieram da oferta anterior. |

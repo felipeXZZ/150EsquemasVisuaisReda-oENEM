@@ -13,8 +13,8 @@
  * ===================================================================== */
 
 /* ------------------------------------------------------------------ */
-/*  CHECKOUT (GGCheckout; a 2ª etapa do popup ainda está no Zuptos)   */
-/*  Um link por preço: 10,00 / 25,90 / 17,90 / 12,90. Mudou o preço   */
+/*  CHECKOUT (GGCheckout)                                             */
+/*  Um link por preço: 10,00 / 25,90 / 17,90. Mudou o preço          */
 /*  de um produto no Zuptos? Mexa junto no texto dos planos, nos      */
 /*  popups, no CTA final e no InitiateCheckout (Tracking.tsx).        */
 /*                                                                    */
@@ -34,15 +34,6 @@ export const BASIC_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/O9WWu2UqhK
  * do "Sim, quero" no popup que abre ao clicar no plano Básico.
  */
 export const DOWNSELL_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/4CVWOkbRsDgU8IJ3f0Y9";
-
-/**
- * Checkout da 2ª ETAPA DO POPUP (R$ 12,90 — Plano Completo com os 5 bônus).
- * É uma oferta MAIS BARATA que a da 1ª etapa (R$ 17,90) de propósito: aqui a
- * pessoa já fechou a oferta uma vez e estava indo embora — o desconto maior é
- * a última tentativa. Por isso tem checkout próprio, e o valor do
- * InitiateCheckout dele é separado no Tracking (`upsell-auto-accept`).
- */
-export const AUTO_UPSELL_CHECKOUT_URL = "https://app.zuptos.com.br/checkout/fa8b29859bd97fc6";
 
 /**
  * Back-redirect: página para onde o visitante é levado ao apertar "voltar".
@@ -787,7 +778,6 @@ export const plans = {
     features: [
       { text: "+150 Esquemas Visuais em PDF", included: true },
       { text: "Alta resolução: estude no celular ou imprima", included: true },
-      { text: "Sem os 5 bônus do Completo", included: false },
     ],
     nudge: "Espera: há uma opção muito mais completa logo abaixo",
   },
@@ -857,41 +847,50 @@ export const plans = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  10b. Popup de upsell — 1ª etapa (R$ 17,90)                         */
+/*  10b. Popup de upsell (R$ 17,90)                                    */
 /* ------------------------------------------------------------------ */
 /**
- * Primeira oferta do funil de popup: o Plano Completo (com os 5 bônus) por
- * R$ 17,90. Aparece por DOIS caminhos — no clique do plano Básico e sozinho
+ * A oferta do popup: o Plano Completo (com os 5 bônus) por R$ 17,90, em UMA
+ * etapa só. Aparece por dois caminhos — no clique do plano Básico e sozinho
  * (tempo no site / intenção de saída, ver `upsellAuto`).
- *  - aceitar  → DOWNSELL_CHECKOUT_URL (R$ 17,90)
- *  - recusar  → BASIC_CHECKOUT_URL (R$ 10,00, só os esquemas)
- *  - FECHAR   → não acaba o funil: cai na 2ª etapa (`upsellDownsell`)
+ *  - aceitar → DOWNSELL_CHECKOUT_URL (R$ 17,90)
+ *  - recusar → BASIC_CHECKOUT_URL (R$ 10,00, só os esquemas)
+ *  - fechar  → acabou, nenhuma outra oferta aparece
  *
- * A lista de bônus NÃO é repetida aqui: sai de `bonuses.items`, para não
- * existirem duas listas que podem divergir.
+ * O corpo é uma COMPARAÇÃO lado a lado dos dois planos: a pessoa vê de uma
+ * vez o que perde ficando no Básico e quanto custa a diferença.
+ * ⚠️ Mexeu no preço? Mexa junto: `upgradeDiff`, `completo.price`, o `cta`,
+ * o checkout e o valor de `upsell-accept` no Tracking.tsx.
  */
 export const upsell = {
-  /** Faixa vermelha no topo do popup — é o "pare" que segura quem ia sair. */
-  eyebrow: "✨ Espera! Oferta exclusiva",
-  title: "Leve o {{Completo}} por apenas:",
-  lead: "Antes de continuar com o básico, veja essa oferta única:",
-  priceFrom: "De R$ 25,90",
-  /**
-   * O preço sai em duas partes para os centavos ficarem menores que os reais:
-   * `priceNow` são os reais e `priceNowCents` os centavos (deixe vazio se um
-   * dia a oferta voltar a ser redonda — aí o popup nem renderiza essa parte).
-   * `priceNowFull` é a mesma quantia escrita por extenso, usada onde a frase
-   * precisa do valor inteiro (CTA e leitor de tela).
-   */
-  priceNow: "R$ 17",
-  priceNowCents: ",90",
-  priceNowFull: "R$ 17,90",
-  /** ⚠️ Precisa bater com `priceFrom` − `priceNowFull` (25,90 − 17,90). */
-  savings: "Você economiza R$ 8,00 no total",
-  paymentNote: "pagamento único · acesso imediato",
-  bonusTitle: "5 bônus exclusivos inclusos",
-  cta: "Quero o Completo por R$ 17,90",
-  decline: "Não, prefiro continuar com o básico por R$ 10,00",
+  badge: "Oferta especial",
+  title: "Espere! Não leve apenas o Básico!",
+  subtitle: "Fizemos uma oferta exclusiva de upgrade só para você.",
+  /** Frase do corpo; `{{diff}}` vira `upgradeDiff` em destaque. */
+  lead: "Por mais apenas {{diff}}, você troca o Básico pelo Plano Completo!",
+  /** ⚠️ Precisa bater com `completo.price` − `basico.price` (17,90 − 10,00). */
+  upgradeDiff: "R$ 7,90",
+  basico: {
+    label: "Plano Básico",
+    price: "R$ 10,00",
+    features: [
+      { text: "150 esquemas visuais", included: true },
+      { text: "Acesso imediato", included: true },
+      { text: "Sem os 5 bônus", included: false },
+    ],
+  },
+  completo: {
+    label: "Plano Completo",
+    priceFrom: "R$ 25,90",
+    price: "R$ 17,90",
+    features: [
+      { text: "150 esquemas visuais", included: true },
+      { text: "Acesso imediato", included: true },
+      { text: "Todos os 5 bônus", included: true },
+    ],
+  },
+  cta: "Sim! Quero o Completo por R$ 17,90",
+  decline: "Continuar apenas com o Básico",
   closeLabel: "Fechar",
 };
 
@@ -899,10 +898,10 @@ export const upsell = {
 /*  10c. Gatilho automático — tempo no site e intenção de saída        */
 /* ------------------------------------------------------------------ */
 /**
- * NÃO é uma oferta: são os tempos e os textos de quando o funil de popup
- * abre SOZINHO (a pessoa passou muito tempo sem decidir ou fez o gesto de
- * sair). A oferta que aparece é a MESMA 1ª etapa de `upsell` (R$ 17,90) — o
- * que muda aqui é só o CONTEXTO, porque ninguém escolheu o básico ainda.
+ * NÃO é uma oferta: são os tempos e os textos de quando o popup abre SOZINHO
+ * (a pessoa passou muito tempo sem decidir ou fez o gesto de sair). A oferta
+ * é a MESMA de `upsell` — muda só o CONTEXTO, porque ninguém escolheu o
+ * básico ainda.
  *
  * Abre UMA vez por sessão, e nunca por cima do popup do plano Básico.
  */
@@ -915,88 +914,10 @@ export const upsellAuto = {
    * primeiro segundo, antes de a pessoa ter visto a oferta.
    */
   exitArmMs: 5000,
-  /** Substitui `upsell.lead`: aqui ninguém escolheu o básico ainda. */
-  lead: "Você ainda não garantiu o seu acesso. Antes de fechar, veja esta oferta:",
-  /** Substitui `upsell.decline` pelo mesmo motivo: não há o que "continuar". */
-  decline: "Prefiro só os 150 esquemas por R$ 10,00",
-};
-
-/* ------------------------------------------------------------------ */
-/*  10d. Popup de upsell — 2ª etapa (R$ 12,90)                         */
-/* ------------------------------------------------------------------ */
-/**
- * A última tentativa: quem FECHOU o popup de R$ 17,90 (pelo X, pelo Esc ou
- * clicando fora) recebe o mesmo Plano Completo por R$ 12,90 — não importa se
- * a 1ª etapa veio do clique no Básico ou do gatilho automático.
- *
- * ⚠️ REVISAR: o preço desta 2ª etapa NÃO estava no briefing da campanha (que
- * define 10,00 / 17,90 / 25,90). R$ 12,90 foi escolhido para ficar abaixo da
- * 1ª etapa e ainda acima do Básico — confirme antes de publicar.
- *
- * Só vale para quem FECHOU. Quem clicou em "prefiro o básico" ESCOLHEU e vai
- * para o checkout: perseguir essa pessoa com um segundo popup seria tirar
- * dela a saída que o próprio popup ofereceu.
- *
- * A estrutura (título, bônus, "De R$ 25,90") continua vindo de `upsell`; os
- * campos abaixo substituem os de lá com o mesmo nome.
- * ⚠️ Mexeu no preço? Mexa junto: `AUTO_UPSELL_CHECKOUT_URL`, o `savings`
- * abaixo e o valor de `upsell-auto-accept` no Tracking.tsx.
- */
-export const upsellDownsell = {
-  /**
-   * Esta tela precisa PARECER outra. Quem fechou a de R$ 17,90 vai ver o
-   * mesmo formato de novo — se o topo, o título e o riscado não mudarem, ela
-   * lê "é o mesmo popup" e fecha no automático sem perceber que o preço caiu.
-   * Por isso a faixa vermelha troca de texto aqui.
-   */
-  /** Curto de propósito: na faixa cabem ~2 palavras antes de quebrar em duas
-   *  linhas no celular. Quem diz que o preço caiu é o título, logo abaixo. */
-  eyebrow: "⏳ Última chance!",
-  /** Substitui `upsell.title`: o assunto agora é a QUEDA, não o plano. */
-  title: "Tudo bem, eu {{baixo o preço}} para você",
-  /** Substitui os leads acima: aqui a pessoa já fechou a oferta uma vez. */
-  lead: "É a última vez que essa oferta aparece.",
-  /** Mesma saída de sempre — o básico continua a um clique. */
-  decline: "Prefiro só os 150 esquemas por R$ 10,00",
-  /**
-   * O riscado aqui NÃO é o R$ 25,90 do plano: é o preço que a pessoa ACABOU
-   * de recusar. É o único jeito de a queda ficar visível — riscar de novo o
-   * 25,90 mostraria exatamente a mesma linha da tela anterior.
-   */
-  priceFromLabel: "Você viu por",
-  priceFrom: "R$ 17,90",
-  priceNow: "R$ 12",
-  priceNowCents: ",90",
-  priceNowFull: "R$ 12,90",
-  /**
-   * CURTO o bastante para caber em UMA linha (~30 caracteres neste corpo).
-   * Passou disso, o texto quebra no meio do valor — "R$" numa linha e o
-   * número na outra — e o número, que é o argumento, some.
-   * O "no total" é o que deixa a conta de pé sem imprimir mais um preço na
-   * tela: são R$ 13,00 contra o plano cheio, e não contra o R$ 17,90 riscado
-   * aqui em cima.
-   * ⚠️ Precisa bater com `upsell.priceFrom` − `priceNowFull`.
-   */
-  savings: "Você economiza R$ 13,00 no total",
-  /**
-   * A lista dos 5 bônus não se repete aqui — vira UMA linha. Na 1ª tela ela
-   * era o argumento; aqui ela já foi lida, e repetir 5 itens empurra o preço
-   * novo para fora da primeira olhada.
-   */
-  bonusLine: "Continua com os 5 bônus inclusos",
-  cta: "Quero por 12,90 antes que acabe",
-  /**
-   * Cronômetro REAL: quando zera, o popup fecha e a oferta não volta nesta
-   * sessão. É a mesma regra do `Countdown` da barra de urgência — contador
-   * que reinicia a cada visita é urgência fabricada, e aqui ele não reinicia.
-   *
-   * 5 minutos: tempo de ler, decidir e ir buscar o cartão. ⚠️ Diminuir isto
-   * fecha o popup na cara de quem ainda estava decidindo — o número existe
-   * para dar pressa, não para tirar a compra de quem quer comprar.
-   */
-  expiraMs: 300000,
-  /** Igual ao `savings`: uma linha. Em CAIXA ALTA cabe ainda menos texto. */
-  countdownNote: "essa oferta some quando zerar",
+  /** Substitui `upsell.title`: aqui ninguém escolheu o básico ainda. */
+  title: "Espere! Antes de sair…",
+  /** Substitui `upsell.decline` pelo mesmo motivo. */
+  decline: "Quero só o Básico por R$ 10,00",
 };
 
 /* ------------------------------------------------------------------ */
