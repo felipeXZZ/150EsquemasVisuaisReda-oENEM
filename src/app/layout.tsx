@@ -16,10 +16,7 @@ const poppins = Poppins({
   variable: "--font-body",
 });
 
-/** Pixel da Meta do conjunto "enemredacao" (Gerenciador de Eventos). */
-const META_PIXEL_ID = "26187833960913736";
-
-const TITLE ="+150 Esquemas Visuais para Redação Nota 1000 no ENEM";
+const TITLE = "+150 Esquemas Visuais para Redação Nota 1000 no ENEM";
 const DESCRIPTION =
   "Pare de travar na folha em branco: 150 esquemas visuais para estruturar, argumentar e revisar sua redação do ENEM. Competências, repertório, conectivos e proposta de intervenção, sem apostila longa e sem decoreba.";
 
@@ -126,31 +123,6 @@ export default function RootLayout({
         <Tracking />
         {children}
 
-        {/* Meta Pixel (conjunto "enemredacao") — instalado direto, porque o
-            pixel da Utmify não estava mandando eventos para ele. O fbq daqui
-            também recebe o InitiateCheckout do clique (lib/track.ts). */}
-        <Script id="meta-pixel" strategy="afterInteractive">
-          {`
-            !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-            n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-            document,'script','https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '${META_PIXEL_ID}');
-            fbq('track', 'PageView');
-          `}
-        </Script>
-        <noscript>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            alt=""
-            src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
-          />
-        </noscript>
-
         {/* Utmify — captura de UTMs */}
         <Script
           src="https://cdn.utmify.com.br/scripts/utms/latest.js"
@@ -162,7 +134,7 @@ export default function RootLayout({
         {/* Utmify — Pixel de conversão */}
         <Script id="utmify-pixel" strategy="lazyOnload">
           {`
-            window.pixelId = "6aa4c8286a08a80979bf4d40";
+            window.pixelId = "6ab696e174088d71ed7c15c3";
             var a = document.createElement("script");
             a.setAttribute("async", "");
             a.setAttribute("defer", "");
