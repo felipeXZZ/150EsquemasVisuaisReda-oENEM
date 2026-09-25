@@ -3,7 +3,8 @@
  *
  * Contexto: a página usa a Utmify (script de UTMs + pixel da Utmify), que já
  * cuida de PageView/ViewContent/InitiateCheckout/Purchase e da atribuição por
- * UTMs no checkout. NÃO há Meta Pixel bruto, CAPI, GA4 nem GTM instalados aqui.
+ * UTMs no checkout, e o Meta Pixel instalado direto no layout.tsx (PageView).
+ * NÃO há CAPI, GA4 nem GTM instalados aqui.
  *
  * Por isso esta camada é AGNÓSTICA e defensiva:
  *  - empurra cada evento para window.dataLayer (pronto p/ GA4/GTM se conectados);
