@@ -17,7 +17,7 @@ import {
 import { PAGE_VARIANT, trackEvent } from "@/lib/track";
 
 /**
- * Popup de UPSELL — oferece o Plano Completo (com os 5 bônus) por R$ 17,90,
+ * Popup de UPSELL — oferece o Plano Completo (com os 5 bônus) por R$ 15,90,
  * comparando lado a lado com o Básico. UMA etapa só: fechar encerra.
  *
  * Os dois caminhos que abrem o popup:
@@ -235,7 +235,7 @@ function UpsellDialog({
             ref={acceptRef}
             href={DOWNSELL_CHECKOUT_URL}
             data-cta-location="upsell-accept"
-            data-track-id={`upsell-premium-1790-${origem}`}
+            data-track-id={`upsell-premium-1590-${origem}`}
             data-page-variant={PAGE_VARIANT}
             className="mt-5 flex min-h-[58px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-gradient-to-b from-cta to-cta-dark px-3 py-4 text-center font-cta text-[clamp(0.72rem,3.6vw,1.05rem)] uppercase leading-tight text-white shadow-[0_12px_28px_-8px_rgba(34,180,85,0.65)] ring-1 ring-inset ring-white/25 transition hover:-translate-y-0.5 hover:brightness-110"
           >
@@ -283,7 +283,7 @@ function marcarVisto() {
 
 /**
  * Botão do plano Básico que, em vez de ir direto ao checkout de R$10,00, abre
- * a oferta de R$ 17,90 pelo Plano Completo.
+ * a oferta de R$ 15,90 pelo Plano Completo.
  */
 export function BasicCtaWithUpsell({ label }: { label: string }) {
   const [open, setOpen] = useState(false);
@@ -328,7 +328,7 @@ export function BasicCtaWithUpsell({ label }: { label: string }) {
 }
 
 /**
- * Abre a oferta de R$ 17,90 sem ninguém pedir, por dois gatilhos:
+ * Abre a oferta de R$ 15,90 sem ninguém pedir, por dois gatilhos:
  *
  *  1. TEMPO — `upsellAuto.delayMs` desde que a página abriu. É o gatilho que
  *     vale no celular, onde não existe ponteiro para vigiar — e é de lá que

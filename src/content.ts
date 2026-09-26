@@ -14,7 +14,7 @@
 
 /* ------------------------------------------------------------------ */
 /*  CHECKOUT (GGCheckout)                                             */
-/*  Um link por preço: 10,00 / 25,90 / 17,90. Mudou o preço          */
+/*  Um link por preço: 10,00 / 25,90 / 15,90. Mudou o preço          */
 /*  de um produto no Zuptos? Mexa junto no texto dos planos, nos      */
 /*  popups, no CTA final e no InitiateCheckout (Tracking.tsx).        */
 /*                                                                    */
@@ -30,7 +30,7 @@ export const CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/gyzwMhAIdb7qzSOB
 export const BASIC_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/O9WWu2UqhKw6L6rgD2F7";
 
 /**
- * Checkout do UPSELL (R$ 17,90 — Plano Completo com os 5 bônus). É o destino
+ * Checkout do UPSELL (R$ 15,90 — Plano Completo com os 5 bônus). É o destino
  * do "Sim, quero" no popup que abre ao clicar no plano Básico.
  */
 export const DOWNSELL_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/4CVWOkbRsDgU8IJ3f0Y9";
@@ -847,13 +847,13 @@ export const plans = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  10b. Popup de upsell (R$ 17,90)                                    */
+/*  10b. Popup de upsell (R$ 15,90)                                    */
 /* ------------------------------------------------------------------ */
 /**
- * A oferta do popup: o Plano Completo (com os 5 bônus) por R$ 17,90, em UMA
+ * A oferta do popup: o Plano Completo (com os 5 bônus) por R$ 15,90, em UMA
  * etapa só. Aparece por dois caminhos — no clique do plano Básico e sozinho
  * (tempo no site / intenção de saída, ver `upsellAuto`).
- *  - aceitar → DOWNSELL_CHECKOUT_URL (R$ 17,90)
+ *  - aceitar → DOWNSELL_CHECKOUT_URL (R$ 15,90)
  *  - recusar → BASIC_CHECKOUT_URL (R$ 10,00, só os esquemas)
  *  - fechar  → acabou, nenhuma outra oferta aparece
  *
@@ -868,8 +868,8 @@ export const upsell = {
   subtitle: "Fizemos uma oferta exclusiva de upgrade só para você.",
   /** Frase do corpo; `{{diff}}` vira `upgradeDiff` em destaque. */
   lead: "Por mais apenas {{diff}}, você troca o Básico pelo Plano Completo!",
-  /** ⚠️ Precisa bater com `completo.price` − `basico.price` (17,90 − 10,00). */
-  upgradeDiff: "R$ 7,90",
+  /** ⚠️ Precisa bater com `completo.price` − `basico.price` (15,90 − 10,00). */
+  upgradeDiff: "R$ 5,90",
   basico: {
     label: "Plano Básico",
     price: "R$ 10,00",
@@ -882,14 +882,14 @@ export const upsell = {
   completo: {
     label: "Plano Completo",
     priceFrom: "R$ 25,90",
-    price: "R$ 17,90",
+    price: "R$ 15,90",
     features: [
       { text: "150 esquemas visuais", included: true },
       { text: "Acesso imediato", included: true },
       { text: "Todos os 5 bônus", included: true },
     ],
   },
-  cta: "Sim! Quero o Completo por R$ 17,90",
+  cta: "Sim! Quero o Completo por R$ 15,90",
   decline: "Continuar apenas com o Básico",
   closeLabel: "Fechar",
 };
