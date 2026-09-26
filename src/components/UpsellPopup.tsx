@@ -7,10 +7,11 @@ import {
   useState,
   type RefObject,
 } from "react";
-import { Check, Flame, Gift, Sparkles, X } from "lucide-react";
+import { Gift, X } from "lucide-react";
 import {
   upsell,
   upsellAuto,
+  bonuses,
   BASIC_CHECKOUT_URL,
   DOWNSELL_CHECKOUT_URL,
 } from "@/content";
@@ -18,12 +19,12 @@ import { PAGE_VARIANT, trackEvent } from "@/lib/track";
 
 /**
  * Popup de UPSELL — oferece o Plano Completo (com os 5 bônus) por R$ 15,90,
- * comparando lado a lado com o Básico. UMA etapa só: fechar encerra.
+ * mostrando os bônus que faltam no Básico. UMA etapa só: fechar encerra.
  *
  * Os dois caminhos que abrem o popup:
  *  - `BasicCtaWithUpsell` — a pessoa clicou no plano Básico;
  *  - `AutoUpsellPopup`    — ninguém pediu: demorou no site ou foi sair.
- * O caminho muda só o título e o texto da recusa; a oferta é a mesma.
+ * O caminho muda só o texto da recusa; a oferta é a mesma.
  *
  * Recusar é um link de verdade, e não um "fechar disfarçado": quem quer só os
  * esquemas precisa conseguir comprar sem obstáculo.
@@ -49,9 +50,7 @@ type DialogProps = {
    * ele só é lido dentro do efeito, na hora certa.
    */
   openerRef?: RefObject<HTMLElement | null>;
-  /** Título do topo — muda conforme quem abriu o popup. */
-  title: string;
-  /** Texto da recusa — idem. */
+  /** Texto da recusa — muda conforme quem abriu o popup. */
   decline: string;
   /** Sufixo dos data-track-id, para separar os caminhos no relatório. */
   origem: string;
@@ -65,43 +64,15 @@ type DialogProps = {
 // código-fonte ele é invisível, e quem mexer aqui depois o apagaria sem ver.
 const valorInteiro = (texto: string) => texto.replace(/R\$\s+/g, "R$ ");
 
-type Feature = { text: string; included: boolean };
-
-function ListaPlano({ features, destaque }: { features: Feature[]; destaque: boolean }) {
-  return (
-    <ul className="mt-2.5 space-y-1.5">
-      {features.map((f) => (
-        <li
-          key={f.text}
-          className={`flex items-start gap-1.5 text-[12px] leading-snug ${
-            !f.included
-              ? "text-danger"
-              : destaque
-                ? "font-bold text-ink"
-                : "text-ink-soft"
-          }`}
-        >
-          {f.included ? (
-            <Check
-              className="mt-px size-3.5 shrink-0 text-green-ink"
-              strokeWidth={3}
-              aria-hidden
-            />
-          ) : (
-            <X className="mt-px size-3.5 shrink-0" strokeWidth={3} aria-hidden />
-          )}
-          <span>{f.text}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
+/* Os 5 bônus por extenso: é o que fica de fora que precisa justificar a
+   troca de plano. */
+const FALTA_NO_BASICO = bonuses.items.map((b) => b.title);
+const NOTA_BONUS = `${upsell.upgradeNote} ${bonuses.totalValue})`;
 
 function UpsellDialog({
   open,
   onClose,
   openerRef,
-  title,
   decline,
   origem,
 }: DialogProps) {
@@ -153,104 +124,96 @@ function UpsellDialog({
 
   if (!open) return null;
 
-  const [leadAntes, leadDepois] = upsell.lead.split("{{diff}}");
-  const { basico, completo } = upsell;
-
   return (
     <div
-      className="fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto bg-black/75 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-label={title}
+        aria-label={upsell.eyebrow}
         onClick={(e) => e.stopPropagation()}
+        /* Cartão branco com topo AZUL: o azul é a cor da marca, e o vermelho
+           fica guardado para o que a pessoa PERDE (a lista abaixo). */
         className="relative my-auto w-full max-w-md overflow-hidden rounded-3xl bg-white text-center shadow-2xl"
       >
-        {/* Topo no azul das seções escuras do site. */}
-        <div className="relative bg-gradient-to-b from-purple-ink to-plum px-6 pb-5 pt-6 text-white">
+        {/* Topo: ícone + a frase. `px-11` guarda o lugar do X. */}
+        <div className="relative bg-gradient-to-b from-purple-ink to-plum px-11 pb-4 pt-4">
+          <span
+            aria-hidden
+            className="mx-auto flex size-10 items-center justify-center rounded-xl bg-white/15 text-white"
+          >
+            <Gift className="size-5" />
+          </span>
+          <p className="mt-2 text-balance text-[15px] font-extrabold leading-snug text-white sm:text-[17px]">
+            {upsell.eyebrow}
+          </p>
           <button
             type="button"
             onClick={onClose}
             aria-label={upsell.closeLabel}
-            className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-white text-ink shadow-md transition hover:scale-105"
+            className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/30"
           >
-            <X className="size-5" strokeWidth={2.5} aria-hidden />
+            <X className="size-[18px]" aria-hidden />
           </button>
-
-          <p className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-wide ring-1 ring-inset ring-white/25">
-            <Flame className="size-3.5 text-gold" aria-hidden />
-            {upsell.badge}
-            <Gift className="size-3.5 text-gold" aria-hidden />
-          </p>
-
-          <h3 className="font-display mx-auto mt-3 max-w-[18ch] text-balance text-[1.6rem] leading-tight sm:text-[1.75rem]">
-            {title}
-          </h3>
-          <p className="mx-auto mt-1.5 max-w-[30ch] text-balance text-[13px] font-semibold leading-snug text-ink-invert">
-            {upsell.subtitle}
-          </p>
         </div>
 
         <div className="p-5 sm:p-6">
-          <p className="text-balance text-[15px] leading-snug text-ink">
-            {leadAntes}
-            <strong className="whitespace-nowrap font-extrabold text-purple-ink">
-              {valorInteiro(upsell.upgradeDiff)}
-            </strong>
-            {leadDepois}
-          </p>
+          {/* O que fica de fora. É o argumento da tela: a pessoa lê o que
+              PERDE antes de ler o preço de levar tudo. */}
+          <h3 className="text-[15px] font-extrabold uppercase tracking-wide text-ink sm:text-base">
+            {upsell.missingLead}{" "}
+            <span className="text-danger-vivid">{upsell.missingEmphasis}</span>
+          </h3>
+          <ul className="mt-3 space-y-2 rounded-2xl border border-danger/15 bg-danger/[0.05] px-4 py-3.5 text-left">
+            {FALTA_NO_BASICO.map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-2.5 text-[13px] font-bold leading-snug text-danger"
+              >
+                <X className="mt-px size-4 shrink-0" strokeWidth={3} aria-hidden />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
 
-          {/* Comparação lado a lado: o Básico apagado, o Completo em destaque. */}
-          <div className="mt-4 grid grid-cols-2 gap-3 text-left">
-            <div className="rounded-2xl border border-border bg-sand p-3">
-              <span className="inline-block rounded-md bg-border px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-ink-soft">
-                {basico.label}
-              </span>
-              <p className="font-display mt-2 whitespace-nowrap text-[1.35rem] leading-none text-ink-soft">
-                {valorInteiro(basico.price)}
-              </p>
-              <ListaPlano features={basico.features} destaque={false} />
-            </div>
-
-            <div className="rounded-2xl border-2 border-purple bg-lilac p-3 shadow-[0_10px_24px_-12px_rgba(29,78,216,0.55)]">
-              <span className="inline-block rounded-md bg-purple-ink px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-white">
-                {completo.label}
-              </span>
-              <p className="old-price mt-1.5 text-[11px] font-bold leading-none">
-                {valorInteiro(completo.priceFrom)}
-              </p>
-              <p className="font-display mt-0.5 whitespace-nowrap text-[1.35rem] leading-none text-purple-ink">
-                {valorInteiro(completo.price)}
-              </p>
-              <ListaPlano features={completo.features} destaque />
-            </div>
+          {/* Quanto custa a mais levar tudo — a diferença, e não o preço
+              cheio: "+ R$ 5,90" pesa menos que "R$ 15,90". */}
+          <div className="mt-4 rounded-2xl border border-cta/30 bg-green-soft px-4 py-3.5">
+            <p className="text-[13px] font-bold leading-snug text-green-ink">
+              {valorInteiro(upsell.upgradeLine)}
+            </p>
+            <p className="font-display mt-1 text-[1.6rem] uppercase leading-none text-green-ink sm:text-[1.8rem]">
+              {upsell.upgradeName}
+            </p>
+            <p className="mt-1.5 text-[12px] font-semibold leading-snug text-ink-soft">
+              {valorInteiro(NOTA_BONUS)}
+            </p>
           </div>
 
-          {/* Aceitar — `whitespace-nowrap` + corpo em `clamp`: o preço não
-              pode cair sozinho na linha de baixo; a letra encolhe. */}
+          {/* Aceitar — pode quebrar em duas linhas; o que não pode é o valor
+              se partir (`valorInteiro` cola o "R$" no número). */}
           <a
             ref={acceptRef}
             href={DOWNSELL_CHECKOUT_URL}
             data-cta-location="upsell-accept"
             data-track-id={`upsell-premium-1590-${origem}`}
             data-page-variant={PAGE_VARIANT}
-            className="mt-5 flex min-h-[58px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-gradient-to-b from-cta to-cta-dark px-3 py-4 text-center font-cta text-[clamp(0.72rem,3.6vw,1.05rem)] uppercase leading-tight text-white shadow-[0_12px_28px_-8px_rgba(34,180,85,0.65)] ring-1 ring-inset ring-white/25 transition hover:-translate-y-0.5 hover:brightness-110"
+            className="mt-5 flex min-h-[56px] w-full items-center justify-center text-balance rounded-2xl bg-gradient-to-b from-cta to-cta-dark px-4 py-3.5 text-center text-[15px] font-extrabold leading-tight text-white shadow-[0_12px_28px_-8px_rgba(34,180,85,0.65)] ring-1 ring-inset ring-white/25 transition hover:-translate-y-0.5 hover:brightness-110 sm:px-5"
           >
-            <Sparkles className="size-5 shrink-0 text-gold" aria-hidden />
             {valorInteiro(upsell.cta)}
           </a>
 
-          {/* Recusar — link de verdade, direto ao checkout do Básico. Discreto
-              para o verde seguir sendo o caminho óbvio. */}
+          {/* Recusar — link de verdade, direto ao checkout do Básico. Branco e
+              de contorno para o verde seguir sendo o caminho óbvio. */}
           <a
             href={BASIC_CHECKOUT_URL}
             data-cta-location="upsell-decline"
             data-track-id={`basic-checkout-1000-${origem}`}
             data-page-variant={PAGE_VARIANT}
-            className="mt-3 flex min-h-[46px] w-full items-center justify-center text-balance rounded-xl bg-sand px-4 py-2.5 text-center text-[12px] font-bold uppercase leading-snug tracking-wide text-ink-soft transition hover:bg-border"
+            className="mt-3 flex min-h-[46px] w-full items-center justify-center text-balance rounded-xl border border-border bg-white px-4 py-2.5 text-center text-[13px] font-bold leading-snug text-ink-soft transition hover:bg-cream"
           >
             {valorInteiro(decline)}
           </a>
@@ -319,7 +282,6 @@ export function BasicCtaWithUpsell({ label }: { label: string }) {
         open={open}
         onClose={fechar}
         openerRef={openerRef}
-        title={upsell.title}
         decline={upsell.decline}
         origem="plano"
       />
@@ -391,7 +353,6 @@ export function AutoUpsellPopup() {
     <UpsellDialog
       open={open}
       onClose={fechar}
-      title={upsellAuto.title}
       decline={upsellAuto.decline}
       origem="auto"
     />

@@ -857,40 +857,28 @@ export const plans = {
  *  - recusar → BASIC_CHECKOUT_URL (R$ 10,00, só os esquemas)
  *  - fechar  → acabou, nenhuma outra oferta aparece
  *
- * O corpo é uma COMPARAÇÃO lado a lado dos dois planos: a pessoa vê de uma
- * vez o que perde ficando no Básico e quanto custa a diferença.
- * ⚠️ Mexeu no preço? Mexa junto: `upgradeDiff`, `completo.price`, o `cta`,
- * o checkout e o valor de `upsell-accept` no Tracking.tsx.
+ * O argumento é o que FALTA no Básico: a lista vermelha mostra os 5 bônus que
+ * a pessoa deixa para trás, e a caixa verde quanto custa a mais levar tudo.
+ * Os nomes dos bônus NÃO são repetidos aqui: saem de `bonuses.items`, e o
+ * valor deles de `bonuses.totalValue`, para não existirem duas listas que
+ * podem divergir.
+ * ⚠️ Mexeu no preço? Mexa junto: o `upgradeLine` (a diferença para o Básico:
+ * 15,90 − 10,00), o `cta`, o checkout e o valor de `upsell-accept` no
+ * Tracking.tsx.
  */
 export const upsell = {
-  badge: "Oferta especial",
-  title: "Espere! Não leve apenas o Básico!",
-  subtitle: "Fizemos uma oferta exclusiva de upgrade só para você.",
-  /** Frase do corpo; `{{diff}}` vira `upgradeDiff` em destaque. */
-  lead: "Por mais apenas {{diff}}, você troca o Básico pelo Plano Completo!",
-  /** ⚠️ Precisa bater com `completo.price` − `basico.price` (15,90 − 10,00). */
-  upgradeDiff: "R$ 5,90",
-  basico: {
-    label: "Plano Básico",
-    price: "R$ 10,00",
-    features: [
-      { text: "150 esquemas visuais", included: true },
-      { text: "Acesso imediato", included: true },
-      { text: "Sem os 5 bônus", included: false },
-    ],
-  },
-  completo: {
-    label: "Plano Completo",
-    priceFrom: "R$ 25,90",
-    price: "R$ 15,90",
-    features: [
-      { text: "150 esquemas visuais", included: true },
-      { text: "Acesso imediato", included: true },
-      { text: "Todos os 5 bônus", included: true },
-    ],
-  },
-  cta: "Sim! Quero o Completo por R$ 15,90",
-  decline: "Continuar apenas com o Básico",
+  /** Faixa azul do topo, abaixo do ícone de presente. */
+  eyebrow: "ESPERE! Vai deixar esses bônus incríveis?",
+  /** Título da lista vermelha: `missingLead` normal + `missingEmphasis` em vermelho. */
+  missingLead: "O Plano Básico",
+  missingEmphasis: "não inclui:",
+  /** Caixa verde. ⚠️ O valor é a diferença para o Básico: 15,90 − 10,00. */
+  upgradeLine: "Por apenas + R$ 5,90, destrave o",
+  upgradeName: "Plano Completo",
+  /** O valor dos bônus é anexado a esta frase, vindo de `bonuses.totalValue`. */
+  upgradeNote: "150 esquemas + 5 bônus (valem",
+  cta: "SIM! Quero o Plano Completo por R$ 15,90",
+  decline: "Continuar apenas com o plano básico",
   closeLabel: "Fechar",
 };
 
@@ -914,9 +902,7 @@ export const upsellAuto = {
    * primeiro segundo, antes de a pessoa ter visto a oferta.
    */
   exitArmMs: 5000,
-  /** Substitui `upsell.title`: aqui ninguém escolheu o básico ainda. */
-  title: "Espere! Antes de sair…",
-  /** Substitui `upsell.decline` pelo mesmo motivo. */
+  /** Substitui `upsell.decline`: aqui ninguém escolheu o básico ainda. */
   decline: "Quero só o Básico por R$ 10,00",
 };
 
